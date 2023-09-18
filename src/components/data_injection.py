@@ -27,7 +27,7 @@ class DataInjection:
             #split the data into train and test
             train_data,test_data = train_test_split(df,train_size=0.30,random_state=42)
             train_data.to_csv(self.data_path.train_data_path,header= True,index=False)
-            train_data.to_csv(self.data_path.test_data_path,header= True,index=False)
+            test_data.to_csv(self.data_path.test_data_path,header= True,index=False)
             logging.info('Train Test complited')
 
             return(
