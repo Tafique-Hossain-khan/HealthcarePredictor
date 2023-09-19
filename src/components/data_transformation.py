@@ -76,10 +76,11 @@ class DataTransformation:
 
         except Exception as e:
             raise CustomException(e,sys)
-
+'''
 if __name__ == "__main__":
     obj = DataInjection()
     train_arr,test_arr = obj.initiate_data_injection()
 
     pre_obj = DataTransformation()
     pre_obj.initiate_data_transformation(train_arr,test_arr)
+'''

@@ -1,14 +1,18 @@
 import os,sys
 from src.exception import CustomException
 from src.logger import logging
-from src.components.data_transformation import DataTransformation
-from src.components.data_injection import DataInjection
+
 import pickle
 import numpy as np
 import pandas as pd
 #for balencing the dataset
 from imblearn.under_sampling import RandomUnderSampler
 from collections import Counter
+
+def load_object(file_path):
+
+    with open(file_path,'wb') as f:
+        pickle.loads(f)
 
 def save_obj(file_path,obj):
 

@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 preprocessor.pkl
+model.pkl
