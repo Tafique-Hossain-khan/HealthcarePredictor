@@ -66,6 +66,7 @@ class DataTransformation:
             train_arr = np.c_[input_feater_train_arr,np.array(target_feature_train_df)]
             test_arr = np.c_[input_feater_test_arr,np.array(target_feature_test_df)]
             logging.info('Saving the preprocessor obj in artifacts')
+           
             save_obj(file_path=self.preprocessor_path.preprocessor_path_config,obj= preprocessor_obj)
             return(
                 train_arr,
