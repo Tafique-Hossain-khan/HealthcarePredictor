@@ -9,10 +9,15 @@ import pandas as pd
 from imblearn.under_sampling import RandomUnderSampler
 from collections import Counter
 
-def load_object(file_path):
 
-    with open(file_path,'wb') as f:
-        pickle.loads(f)
+def load_object(file_path):
+    try:
+        with open(file_path, 'rb') as f:
+            obj = pickle.load(f)
+        return obj
+    except Exception as e:
+        raise CustomException(e, sys)
+
 
 def save_obj(file_path,obj):
 
