@@ -1,56 +1,14 @@
 import streamlit as st
 from src.Diabetes.pipeline.prediction_pipeline import CustomInput, Prediction
 
-
-# CSS for styling and animation
-css = """
-<style>
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-.intro {
-    animation: fadeIn 2s;
-    color: #2E86C1;
-    font-size: 1.2em;
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    border: 2px solid #AED6F1;
-    border-radius: 10px;
-    background-color: #E8F8F5;
-}
-.header {
-    animation: fadeIn 2s;
-    color: #154360;
-    font-size: 2em;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 20px;
-}
-</style>
-"""
-
-# App description with custom CSS and animation
-st.write(css, unsafe_allow_html=True)
-st.markdown("<div class='header'>Health Prediction App</div>", unsafe_allow_html=True)
-st.markdown("""
-<div class='intro'>
-    Welcome to the Health Prediction App. This app allows you to predict various health conditions such as Diabetes, Heart Disease,
-    and provides a symptom-based disease predictor. Please select an option from the sidebar to get started.
-</div>
-""", unsafe_allow_html=True)
-
-# Create a placeholder for dynamic content
-placeholder = st.empty()
-
 st.sidebar.title("Medical app")
-st.sidebar.image('https://animationvisarts.com/wp-content/uploads/2016/11/Olympics-Logo.jpg')
+st.sidebar.image('https://cdn-icons-png.flaticon.com/512/124/124945.png')
 diabetes_button = st.sidebar.button('Diabetes')
 heart_button = st.sidebar.button('Heart')
 symptoms_button = st.sidebar.button('Predict Symptoms')
 
 if diabetes_button:
-
+    
     st.header("Diabetes Predictor")
 
     gender_list = ['Male',"Female"]
@@ -81,7 +39,11 @@ if diabetes_button:
         return price
     submit_button = st.button("Submit")
     if submit_button:
-        st.write(f'The price of Diamond is:{perform_prediction()}')
+        prediction = perform_prediction()
+        if prediction == 1:
+            st.write("You have diabetes please consult a doctor ")
+        else:
+            st.write("You don't have diabetes! Take care")
 
 
 ## page for hear dese prediction
