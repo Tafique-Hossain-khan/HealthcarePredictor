@@ -163,3 +163,5 @@ preprocessor.pkl
 model.pkl
 
 artifacts
+
+notebook/health_model.pkl
