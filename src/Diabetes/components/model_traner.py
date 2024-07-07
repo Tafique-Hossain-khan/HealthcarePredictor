@@ -8,7 +8,7 @@ from src.exception import CustomException
 from src.utils import save_obj
 @dataclass 
 class ModelTranerConfig:
-    model_trainer_config_path:str = os.path.join('artifacts/Diabetes','diabestes_model.pkl') 
+    model_trainer_config_path:str = os.path.join('artifacts/Diabetes_modles','diabestes_model.pkl') 
 
 
 class ModelTrainer:

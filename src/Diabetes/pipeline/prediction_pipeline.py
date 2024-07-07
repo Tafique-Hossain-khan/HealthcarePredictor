@@ -13,9 +13,9 @@ class Prediction:
 
         try:
             
-            preprocessor_path = os.path.join('artifacts/Diabetes','diabestes_preprocessor.pkl')
+            preprocessor_path = os.path.join('artifacts/Diabetes_modles','diabestes_preprocessor.pkl')
             
-            model_path = os.path.join('artifacts/Diabetes','diabestes_model.pkl')
+            model_path = os.path.join('artifacts/Diabetes_modles','diabestes_model.pkl')
             logging.info("Path creation done")
 
             preprocessor = load_object(preprocessor_path)
