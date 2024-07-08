@@ -1,7 +1,7 @@
 import streamlit as st
 
 from src.Diabetes.pipeline.prediction_pipeline import CustomInput, Prediction
-
+from src.Medication_system.recommend import prediction,recommendation
 
 # Initialize session state variables
 if 'diabetes' not in st.session_state:
@@ -119,29 +119,25 @@ if st.session_state.predict_symptoms:
         'prognosis'
     ]
 
-    # Create a Streamlit app
-    st.title('Symptom Selector')
-    click = st.button("click here")
-
-    if click:
-        
-        # List of items
-        items = ["a", "b", "c", "d"]
-
-        # Create a string to display the items with numbers
-        items_str = "\n".join([f"{i+1}. {item}" for i, item in enumerate(items)])
-
-        # Display the items in a box
-        st.text_area("Items List", items_str, height=150, max_chars=None)
-
-        # Alternatively, you can use st.markdown to display with some styling
-        st.markdown("**Items List**")
-        st.markdown(f"{items_str}")
-
 
     # Create a multi-select dropdown
     selected_symptoms = st.multiselect('Select your symptoms:', symptoms)
-    print(selected_symptoms)
-    # Display the selected values
-    st.write('You selected:', selected_symptoms)
+
+    button = st.button("Predict")
+    if button:
+        #provide the input to the predict function and get the name of the diseases
+        pred = prediction()
+        diseases = pred.predict(selected_symptoms)
+
+        st.warning(diseases)
+
+        #send the diseases fro recommdation
+
+        recommend = recommendation()
+        description,medication,diets,precautaion,workout = recommend.recommendation_system(diseases)
+
+        #create butoons for each of them
+        desc = st.button("Description of Diseases")
+        print(description)
+        
 
