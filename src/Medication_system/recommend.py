@@ -79,9 +79,9 @@ class recommendation:
             precautaion = pre[['Precaution_1'	,'Precaution_2'	,'Precaution_3'	,'Precaution_4']].iloc[ind_pre].values.tolist()
 
             #workout
-            workout[workout['disease']==diseases]['workout'].values.tolist()
+            workout_plan = workout[workout['disease']==diseases]['workout'].values.tolist()
 
-            return description,medication,diets,precautaion,workout
+            return description,medication,diets,precautaion,workout_plan
         except Exception as e:
             raise CustomException(e,sys)
 
