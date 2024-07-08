@@ -2,7 +2,7 @@ import streamlit as st
 
 from src.Diabetes.pipeline.prediction_pipeline import CustomInput, Prediction
 from src.Medication_system.recommend import prediction,recommendation
-
+from streamlit_option_menu import option_menu
 
 # Initialize session state variables
 if 'diabetes' not in st.session_state:
@@ -13,30 +13,33 @@ if 'predict_symptoms' not in st.session_state:
     st.session_state.predict_symptoms = False
 if 'show_welcome' not in st.session_state:
     st.session_state.show_welcome = True  # Initialize welcome message state
-# Sidebar components
-st.sidebar.title("Medical app")
-st.sidebar.image('https://cdn-icons-png.flaticon.com/512/124/124945.png')
 
-diabetes_button = st.sidebar.button('Diabetes')
-heart_button = st.sidebar.button('Heart')
-symptoms_button = st.sidebar.button('Predict Symptoms')
+## new side bar
+with st.sidebar:
+    selected = option_menu('Medical app',
 
+                           ['Diabetes Prediction',
+                            'Heart Disease Prediction',
+                            'Dieseas prediction Based on symptioms'],
+                           menu_icon='hospital-fill',
+                           icons=['activity', 'heart', 'person'],
+                           default_index=0)
 # Update session state based on button clicks
-if diabetes_button or heart_button or symptoms_button:
+if selected == 'Diabetes Prediction' or selected == 'Heart Disease Prediction' or selected == 'Dieseas prediction Based on symptioms':
     st.session_state.show_welcome = False  # Hide welcome message on any button click
 
 # Update session state based on button clicks
-if diabetes_button:
+if selected == 'Diabetes Prediction':
     st.session_state.diabetes = True
     st.session_state.heart = False
     st.session_state.predict_symptoms = False
 
-if heart_button:
+if selected == 'Heart Disease Prediction' :
     st.session_state.heart = True
     st.session_state.diabetes = False
     st.session_state.predict_symptoms = False
 
-if symptoms_button:
+if selected == 'Dieseas prediction Based on symptioms':
     st.session_state.predict_symptoms = True
     st.session_state.diabetes = False
     st.session_state.heart = False

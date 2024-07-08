@@ -1,11 +1,22 @@
 import streamlit as st
 from src.Diabetes.pipeline.prediction_pipeline import CustomInput, Prediction
-
+from streamlit_option_menu import option_menu
+'''
 st.sidebar.title("Medical app")
 st.sidebar.image('https://cdn-icons-png.flaticon.com/512/124/124945.png')
 diabetes_button = st.sidebar.button('Diabetes')
 heart_button = st.sidebar.button('Heart')
 symptoms_button = st.sidebar.button('Predict Symptoms')
+'''
+with st.sidebar:
+    selected = option_menu('Medical app',
+
+                           ['Diabetes Prediction',
+                            'Heart Disease Prediction',
+                            'Dieseas prediction Based on symptioms'],
+                           menu_icon='hospital-fill',
+                           icons=['activity', 'heart', 'person'],
+                           default_index=0)
 
 if diabetes_button:
     
