@@ -3,6 +3,7 @@ import streamlit as st
 from src.Diabetes.pipeline.prediction_pipeline import CustomInput, Prediction
 from src.Medication_system.recommend import prediction,recommendation
 
+
 # Initialize session state variables
 if 'diabetes' not in st.session_state:
     st.session_state.diabetes = False
@@ -10,7 +11,8 @@ if 'heart' not in st.session_state:
     st.session_state.heart = False
 if 'predict_symptoms' not in st.session_state:
     st.session_state.predict_symptoms = False
-
+if 'show_welcome' not in st.session_state:
+    st.session_state.show_welcome = True  # Initialize welcome message state
 # Sidebar components
 st.sidebar.title("Medical app")
 st.sidebar.image('https://cdn-icons-png.flaticon.com/512/124/124945.png')
@@ -18,6 +20,10 @@ st.sidebar.image('https://cdn-icons-png.flaticon.com/512/124/124945.png')
 diabetes_button = st.sidebar.button('Diabetes')
 heart_button = st.sidebar.button('Heart')
 symptoms_button = st.sidebar.button('Predict Symptoms')
+
+# Update session state based on button clicks
+if diabetes_button or heart_button or symptoms_button:
+    st.session_state.show_welcome = False  # Hide welcome message on any button click
 
 # Update session state based on button clicks
 if diabetes_button:
@@ -34,6 +40,15 @@ if symptoms_button:
     st.session_state.predict_symptoms = True
     st.session_state.diabetes = False
     st.session_state.heart = False
+
+# Conditionally display the welcome message
+if st.session_state.show_welcome:
+    st.write("""
+    ## Welcome to the Health App
+    This project is a health app where you can predict your risk for diabetes and heart diseases,
+    and get recommendations based on the symptoms of your conditions.
+    """)
+
 
 # Diabetes Predictor Page
 if st.session_state.diabetes:
@@ -75,7 +90,6 @@ if st.session_state.heart:
 
 # Predict Symptoms Page
 if st.session_state.predict_symptoms:
-    st.write("Predict Symptoms functionality coming soon")
 
 
     # list of symptoms
@@ -118,26 +132,85 @@ if st.session_state.predict_symptoms:
         'inflammatory_nails', 'blister', 'red_sore_around_nose', 'yellow_crust_ooze', 
         'prognosis'
     ]
+    # Initialize session state for managing button clicks and state
+    if 'selected_symptoms' not in st.session_state:
+        st.session_state.selected_symptoms = []
 
+    if 'disease_predicted' not in st.session_state:
+        st.session_state.disease_predicted = None
 
+    # Initialize session state for managing button clicks
+    if 'predict_diseases' not in st.session_state:
+        st.session_state.predict_diseases = False
+    if 'desc_button_clicked' not in st.session_state:
+        st.session_state.desc_button_clicked = False
+
+    if 'med_button_clicked' not in st.session_state:
+        st.session_state.med_button_clicked = False
+
+    if 'diet_button_clicked' not in st.session_state:
+        st.session_state.diet_button_clicked = False
+    
     # Create a multi-select dropdown
     selected_symptoms = st.multiselect('Select your symptoms:', symptoms)
-
     button = st.button("Predict")
-    if button:
-        #provide the input to the predict function and get the name of the diseases
-        pred = prediction()
-        diseases = pred.predict(selected_symptoms)
 
-        st.warning(diseases)
-
-        #send the diseases fro recommdation
-
-        recommend = recommendation()
-        description,medication,diets,precautaion,workout = recommend.recommendation_system(diseases)
-
-        #create butoons for each of them
-        desc = st.button("Description of Diseases")
-        print(description)
+   
         
 
+    if button:
+        
+
+        if(len(selected_symptoms)==0):
+            st.warning("Please provide you symptoms")
+        #provide the input to the predict function and get the name of the diseases
+        else:
+            pred = prediction()
+            #diseases = pred.predict(selected_symptoms)
+            #st.warning(diseases)
+            st.session_state.selected_symptoms = selected_symptoms
+            st.session_state.disease_predicted = pred.predict(selected_symptoms)
+            st.warning(f"Predicted Disease: {st.session_state.disease_predicted}")
+            
+    if st.session_state.disease_predicted:
+        st.header("Recommendations")
+        #send the diseases fro recommdation
+        recommend = recommendation()
+        description,medication,diets,precautaion,workout = recommend.recommendation_system(st.session_state.disease_predicted)
+
+
+        # Display checkboxes for different recommendations
+        desc_button = st.button("Show Description")
+        if desc_button:
+            st.write(description )
+        med_button = st.button("Show Medication")
+        if med_button:
+            #st.write(medication)
+            # Create a string to display the items with numbers
+            items_str = "\n".join([f"{i+1}. {item}" for i, item in enumerate(medication)])
+
+            # Display the items in a box
+            st.text_area("Medication", items_str, height=150, max_chars=None)
+            st.warning("Please Consult A Doctor Before Using It",icon= "🚨")
+
+        diet_button = st.button("Show Diets")
+        if diet_button:
+            items_str = "\n".join([f"{i+1}. {item}" for i, item in enumerate(diets)])
+
+            # Display the items in a box
+            st.text_area("Diets", items_str, height=150, max_chars=None)
+        pre_button = st.button("Precautions")
+        if pre_button:
+            items_str = "\n".join([f"{i+1}. {item}" for i, item in enumerate(precautaion)])
+
+            # Display the items in a box
+            st.text_area("Precaution", items_str, height=150, max_chars=None)
+        work_button = st.button("Workouts Plans")
+        if work_button:
+            items_str = "\n".join([f"{i+1}. {item}" for i, item in enumerate(workout)])
+
+            # Display the items in a box
+            st.text_area("Workout", items_str, height=150, max_chars=None)
+
+
+           
