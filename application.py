@@ -49,3 +49,25 @@ if diabetes_button:
 ## page for hear dese prediction
 if heart_button:
     st.write("project commig soon   ")
+
+
+
+'''
+
+
+
+import streamlit as st
+#code for displaying item from the lsit
+# List of items
+items = ["a", "b", "c", "d"]
+
+# Create a string to display the items with numbers
+items_str = "\n".join([f"{i+1}. {item}" for i, item in enumerate(items)])
+
+# Display the items in a box
+st.text_area("Items List", items_str, height=150, max_chars=None)
+
+# Alternatively, you can use st.markdown to display with some styling
+st.markdown("**Items List**")
+st.markdown(f"```{items_str}```")
+'''
