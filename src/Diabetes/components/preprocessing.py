@@ -14,7 +14,7 @@ from src.utils import save_obj,get_balance_dataset
 
 @dataclass
 class preprocessorCofig:
-    preprocessor_path_config:str = os.path.join('artifacts/Diabetes_modles','diabestes_preprocessor.pkl')
+    preprocessor_path_config:str = os.path.join('artifacts/Diabetes_models','diabestes_preprocessor.pkl')
 
 class PreProcessing:
     def __init__(self) -> None:
