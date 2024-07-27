@@ -89,7 +89,49 @@ if st.session_state.diabetes:
 
 # Heart Disease Prediction Page
 if st.session_state.heart:
-    st.write("Project coming soon")
+    
+    # Title
+    st.title('Heart Disease Predictor')
+
+    # Input fields
+    bmi = st.number_input('BMI', min_value=10.0, max_value=50.0, step=0.1)
+    sleep_time = st.number_input('SleepTime', min_value=0, max_value=24, step=1)
+
+    smoking = st.selectbox('Smoking', ['No', 'Yes'])
+    alcohol_drinking = st.selectbox('AlcoholDrinking', ['No', 'Yes'])
+    stroke = st.selectbox('Stroke', ['No', 'Yes'])
+    diff_walking = st.selectbox('DiffWalking', ['Yes', 'No'])
+    sex = st.selectbox('Sex', ['Female', 'Male'])
+    age_category = st.selectbox('AgeCategory', ['65-69', '80 or older', '60-64', '70-74', '75-79',
+                                                '30-34', '18-24', '35-39', '25-29', '40-44', '55-59', 
+                                                '50-54', '45-49'])
+    diabetic = st.selectbox('Diabetic', ['Yes', 'No', 'No, borderline diabetes', 'Yes (during pregnancy)'])
+    physical_activity = st.selectbox('PhysicalActivity', ['No', 'Yes'])
+    asthma = st.selectbox('Asthma', ['No', 'Yes'])
+    kidney_disease = st.selectbox('KidneyDisease', ['No', 'Yes'])
+
+    # Create input data frame
+    input_data = pd.DataFrame({
+        'BMI': [bmi],
+        'Smoking': [smoking],
+        'AlcoholDrinking': [alcohol_drinking],
+        'Stroke': [stroke],
+        'DiffWalking': [diff_walking],
+        'Sex': [sex],
+        'AgeCategory': [age_category],
+        'Diabetic': [diabetic],
+        'PhysicalActivity': [physical_activity],
+        'SleepTime': [sleep_time],
+        'Asthma': [asthma],
+        'KidneyDisease': [kidney_disease]
+    })
+
+    # Display the input data
+    st.write('Input Data', input_data)
+
+    # Predict button
+    if st.button('Predict'):
+        st.write("logic comming soon")
 
 # Predict Symptoms Page
 if st.session_state.predict_symptoms:
