@@ -18,8 +18,9 @@ class ModelTraner:
     def __init__(self) -> None:
         self.mode_traner = ModelTranerConfig()
 
-    def initiate_model_traner(self,train_arr,test_arr):
+    def initiate_model_traner(self,X_train,X_test,y_train,y_test):
         try:
+            '''
             #split the data
             logging.info('spliting the traning dataset')
             X = train_arr[:, :-1]  
@@ -27,7 +28,7 @@ class ModelTraner:
 
             #Model buliding
             X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=42)
-            
+            '''
             
             ad = AdaBoostClassifier()
             ad.fit(X_train,y_train)
