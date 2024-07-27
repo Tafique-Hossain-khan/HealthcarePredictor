@@ -65,7 +65,7 @@ if st.session_state.diabetes:
     smoking_history = st.selectbox("Smoking History", ["never", "former", "current", "not current", "ever"], key="smoking_history")
     bmi = st.number_input("BMI", key="bmi")
     HbA1c_level = st.text_input('HbA1c_level', key="HbA1c_level")
-    blood_glucose_level = st.text_input('blood_glucose_level', key="blood_glucose_level")
+    blood_glucose_level = st.text_input('Blood Glucose Level', key="blood_glucose_level")
 
     def perform_prediction():
         hypertension_value = 1 if st.session_state.hypertension == 'YES' else 0
