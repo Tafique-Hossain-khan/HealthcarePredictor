@@ -66,32 +66,28 @@ if st.session_state.diabetes:
     heart_disease = st.selectbox('Heart Disease', ['YES', 'NO'], key="heart_disease")
     smoking_history = st.selectbox("Smoking History", ["never", "former", "current", "not current", "ever"], key="smoking_history")
     bmi = st.text_input("BMI", key="bmi")
-    HbA1c_level = st.text_input('HbA1c_level', key="HbA1c_level")
+    HbA1c_level = st.text_input('Hemoglobin A1c', key="HbA1c_level")
     blood_glucose_level = st.text_input('Blood Glucose Level', key="blood_glucose_level")
 
     def perform_prediction():
-        # Check for empty or invalid inputs
-        if not st.session_state.gender or not st.session_state.age or not st.session_state.hypertension or \
-           not st.session_state.heart_disease or not st.session_state.smoking_history or \
-           st.session_state.bmi == 0 or not st.session_state.HbA1c_level or not st.session_state.blood_glucose_level:
-            st.warning("Please fill in all the fields correctly.")
+        # Check for empty inputs
+        if not all([gender, age, hypertension, heart_disease, smoking_history, bmi, HbA1c_level, blood_glucose_level]):
+            st.warning("Please fill in all the details.")
             return None, None
 
         try:
-            age_value = int(st.session_state.age)
-            HbA1c_level_value = float(st.session_state.HbA1c_level)
-            blood_glucose_level_value = int(st.session_state.blood_glucose_level)
-            bmi = float(st.session_state.bmi)
+            age_value = int(age)
+            HbA1c_level_value = float(HbA1c_level)
+            blood_glucose_level_value = int(blood_glucose_level)
+            bmi_value = float(bmi)
         except ValueError:
-            st.warning("Please enter valid numeric values for Age, HbA1c level, and Blood Glucose Level.")
+            st.warning("Please enter valid numeric values for Age, HbA1c level, BMI, and Blood Glucose Level.")
             return None, None
 
-        hypertension_value = 1 if st.session_state.hypertension == 'YES' else 0
-        heart_disease_value = 1 if st.session_state.heart_disease == 'YES' else 0
+        hypertension_value = 1 if hypertension == 'YES' else 0
+        heart_disease_value = 1 if heart_disease == 'YES' else 0
 
-        obj = CustomInput(st.session_state.gender, age_value, hypertension_value,
-                          heart_disease_value, st.session_state.smoking_history, st.session_state.bmi,
-                          HbA1c_level_value, blood_glucose_level_value)
+        obj = CustomInput(gender, age_value, hypertension_value, heart_disease_value, smoking_history, bmi_value, HbA1c_level_value, blood_glucose_level_value)
         features = obj.get_df()
         predict_obj = Prediction()
         prediction = predict_obj.predict(features)
