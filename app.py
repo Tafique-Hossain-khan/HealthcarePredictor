@@ -1,8 +1,10 @@
 import streamlit as st
 
+from src.Heart.pipeline.prediction_pipeline import PredictionHeart,CustomInputHeart
 from src.Diabetes.pipeline.prediction_pipeline import CustomInput, Prediction
 from src.Medication_system.recommend import prediction,recommendation
 from streamlit_option_menu import option_menu
+
 
 # Initialize session state variables
 if 'diabetes' not in st.session_state:
@@ -63,29 +65,47 @@ if st.session_state.diabetes:
     hypertension = st.selectbox('High Blood pressure', ['YES', 'NO'], key="hypertension")
     heart_disease = st.selectbox('Heart Disease', ['YES', 'NO'], key="heart_disease")
     smoking_history = st.selectbox("Smoking History", ["never", "former", "current", "not current", "ever"], key="smoking_history")
-    bmi = st.number_input("BMI", key="bmi")
+    bmi = st.text_input("BMI", key="bmi")
     HbA1c_level = st.text_input('HbA1c_level', key="HbA1c_level")
     blood_glucose_level = st.text_input('Blood Glucose Level', key="blood_glucose_level")
 
     def perform_prediction():
+        # Check for empty or invalid inputs
+        if not st.session_state.gender or not st.session_state.age or not st.session_state.hypertension or \
+           not st.session_state.heart_disease or not st.session_state.smoking_history or \
+           st.session_state.bmi == 0 or not st.session_state.HbA1c_level or not st.session_state.blood_glucose_level:
+            st.warning("Please fill in all the fields correctly.")
+            return None, None
+
+        try:
+            age_value = int(st.session_state.age)
+            HbA1c_level_value = float(st.session_state.HbA1c_level)
+            blood_glucose_level_value = int(st.session_state.blood_glucose_level)
+            bmi = float(st.session_state.bmi)
+        except ValueError:
+            st.warning("Please enter valid numeric values for Age, HbA1c level, and Blood Glucose Level.")
+            return None, None
+
         hypertension_value = 1 if st.session_state.hypertension == 'YES' else 0
         heart_disease_value = 1 if st.session_state.heart_disease == 'YES' else 0
 
-        obj = CustomInput(st.session_state.gender, st.session_state.age, hypertension_value,
+        obj = CustomInput(st.session_state.gender, age_value, hypertension_value,
                           heart_disease_value, st.session_state.smoking_history, st.session_state.bmi,
-                          st.session_state.HbA1c_level, st.session_state.blood_glucose_level)
+                          HbA1c_level_value, blood_glucose_level_value)
         features = obj.get_df()
         predict_obj = Prediction()
         prediction = predict_obj.predict(features)
-        return prediction
+        return prediction, features
 
     submit_button = st.button("Submit", key="submit")
     if submit_button:
-        prediction = perform_prediction()
-        if prediction == 1:
-            st.warning("You have diabetes please consult a doctor ")
-        else:
-            st.warning("You don't have diabetes! Take care")
+        prediction, features = perform_prediction()
+        if prediction is not None:
+            if prediction == 1:
+                st.warning("You have diabetes, please consult a doctor.")
+            else:
+                st.warning("You don't have diabetes! Take care.")
+
 
 # Heart Disease Prediction Page
 if st.session_state.heart:
@@ -110,28 +130,36 @@ if st.session_state.heart:
     asthma = st.selectbox('Asthma', ['No', 'Yes'])
     kidney_disease = st.selectbox('KidneyDisease', ['No', 'Yes'])
 
-    # Create input data frame
-    input_data = pd.DataFrame({
-        'BMI': [bmi],
-        'Smoking': [smoking],
-        'AlcoholDrinking': [alcohol_drinking],
-        'Stroke': [stroke],
-        'DiffWalking': [diff_walking],
-        'Sex': [sex],
-        'AgeCategory': [age_category],
-        'Diabetic': [diabetic],
-        'PhysicalActivity': [physical_activity],
-        'SleepTime': [sleep_time],
-        'Asthma': [asthma],
-        'KidneyDisease': [kidney_disease]
-    })
-
-    # Display the input data
-    st.write('Input Data', input_data)
-
+ 
+    input_data = CustomInputHeart(
+    BMI=bmi,
+    Smoking=smoking,
+    AlcoholDrinking=alcohol_drinking,
+    Stroke=stroke,
+    DiffWalking=diff_walking,
+    Sex=sex,
+    AgeCategory=age_category,
+    Diabetic=diabetic,
+    PhysicalActivity=physical_activity,
+    SleepTime=sleep_time,
+    Asthma=asthma,
+    KidneyDisease=kidney_disease
+    )
+    input_df = input_data.get_df()
     # Predict button
     if st.button('Predict'):
-        st.write("logic comming soon")
+
+        pred = PredictionHeart()
+        output = pred.predict(input_df)
+
+        if output == "Yes":
+            st.warning("You Have Heart Disease Please Consult A Docture",icon="🚨")
+        else:
+            st.warning("Your Don't Have Heart Disease Take care!")
+        
+
+
+
 
 # Predict Symptoms Page
 if st.session_state.predict_symptoms:
