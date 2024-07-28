@@ -60,7 +60,7 @@ class PreProcessing:
             X_train_transformed = preprocessor_obj.fit_transform(X_train)
             X_test_transformed = preprocessor_obj.transform(X_test)
             save_obj(file_path=self.preprocessor_path.preprocessor_path_config,obj=preprocessor_obj)
-            #X_train,X_test,y_train,y_test = train_test_split(X_resampled,y_resampled,test_size=0.2,random_state=42)
+            
             logging.info("Train test complited")
             
             return X_train_transformed,X_test_transformed,y_train,y_test
