@@ -1,7 +1,7 @@
 
 # Health Prediction Web App
 
-**Web Page Link:** [Health Prediction Web App](https://your-webpage-link.com)
+**Web Page Link:** [Health Prediction Web App](https://healthcarepredictor-5vlfcggmb2gcbwrxhkappjr.streamlit.app/)
 
 ## Overview
 
