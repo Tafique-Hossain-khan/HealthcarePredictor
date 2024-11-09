@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Prediction based on Symptoms</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/input.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/symptoms.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap">
+    <script src="{{ url_for('static', filename='js/symptoms.js') }}" defer></script>
+</head>
+
+<body class="bg-color-primary text-color-white tracking-wider flex min-h-screen">
+    <div class="blob1"></div>
+    <div class="blob2"></div>
+
+    <main class="flex justify-center items-center w-full flex-col">
+        <div class="w-full max-w-lg bg-gray-800 p-6 rounded-lg shadow-md">
+            <h2 class="text-3xl font-bold mb-6" id="formTitle">Disease Prediction Based on Symptom</h2>
+            
+            <!-- Symptom Selection Form -->
+            <form id="symptom-form" method="POST" action="{{ url_for('symptoms_predictor') }}" class="space-y-4">
+                <label for="symptom-search" class="block text-lg font-semibold text-gray-200">Select your symptoms:</label>
+                <div class="relative">
+                    <input type="text" id="symptom-search" placeholder="Search symptoms..."
+                        class="w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-indigo-500" />
+                    <ul id="symptom-options" class="absolute z-10 bg-gray-800 w-full mt-1 rounded-md shadow-lg hidden">
+                        <!-- Dynamic options will be inserted here -->
+                    </ul>
+                </div>
+
+                <!-- Add this hidden input to store selected symptoms -->
+                <input type="hidden" name="symptoms[]" id="selected-symptoms-input">
+
+                <!-- Selected Symptoms Display -->
+                <div id="selected-symptoms" class="flex flex-wrap gap-2 mt-2"></div>
+
+                <!-- Predict Button -->
+                <button id="predict-btn" type="submit" class="w-full py-2 mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-md">
+                    Predict
+                </button>
+            </form>
+
+            <!-- Results Section -->
+            {% if prediction %}
+            <div class="mt-6">
+                <h3 class="text-xl font-bold mb-4">Prediction Results</h3>
+                <div class="bg-gray-700 p-4 rounded-md">
+                    <p class="text-white">Predicted Disease: {{ prediction.disease }}</p>
+                    <p class="text-white mt-2">{{ prediction.description }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Recommendations Section -->
+            {% if recommendations %}
+            <div class="mt-6">
+                <h3 class="text-xl font-bold mb-4">Recommendations</h3>
+                
+                <button class="recommendation-btn w-full py-2 mb-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
+                    Description
+                </button>
+                <p class="description text-gray-300 hidden">{{ recommendations.description }}</p>
+
+                <button class="recommendation-btn w-full py-2 mb-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
+                    Medication
+                </button>
+                <p class="description text-gray-300 hidden">{{ recommendations.medication }}</p>
+
+                <button class="recommendation-btn w-full py-2 mb-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
+                    Diets
+                </button>
+                <p class="description text-gray-300 hidden">{{ recommendations.diets }}</p>
+
+                <button class="recommendation-btn w-full py-2 mb-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
+                    Precautions
+                </button>
+                <p class="description text-gray-300 hidden">{{ recommendations.precaution }}</p>
+
+                <button class="recommendation-btn w-full py-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
+                    Workouts
+                </button>
+                <p class="description text-gray-300 hidden">{{ recommendations.workout }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <footer class="footer">
+            <small style="margin-bottom: 20px; display: inline-block">
+                © 2023 made by -
+                <a target="_blank" href="#">Tafique Hossain khan & Mrutyunjaya Sahoo</a>
+            </small>
+        </footer>
+    </main>
+</body>
+
+</html>
