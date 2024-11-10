@@ -111,19 +111,38 @@ def symptoms_predictor():
                 return render_template('symptoms.html', error="Please select at least one symptom")
             
             selected_symptoms = json.loads(symptoms_json)
+            print("Selected symptoms:", selected_symptoms)  # Debug print
             
             # Get prediction
             pred = prediction()
             disease_predicted = pred.predict(selected_symptoms)
+            print("Predicted disease:", disease_predicted)  # Debug print
             
             # Get recommendations
             recommend = recommendation()
             description, medication, diets, precaution, workout = recommend.recommendation_system(disease_predicted)
             
+            # Clean the data - handle both string and list cases
+            def clean_data(data):
+                if isinstance(data, str):
+                    return data.strip("[]'").split("', '")
+                elif isinstance(data, list):
+                    return data
+                return []
+
+            # Clean all data
+            description = clean_data(description)
+            medication = clean_data(medication)
+            diets = clean_data(diets)
+            precaution = clean_data(precaution)
+            workout = clean_data(workout)
+            
+            print("Recommendations loaded")  # Debug print
+            
             return render_template('symptoms.html', 
-                prediction={'disease': disease_predicted, 'description': description},
+                prediction={'disease': disease_predicted, 'description': description[0] if description else ""},
                 recommendations={
-                    'description': description,
+                    'description': description[0] if description else "",
                     'medication': medication,
                     'diets': diets,
                     'precaution': precaution,
@@ -131,7 +150,7 @@ def symptoms_predictor():
                 })
             
         except Exception as e:
-            print(f"Error: {str(e)}")  # For debugging
+            print(f"Error occurred: {str(e)}")  # Debug print
             return render_template('symptoms.html', error=str(e))
     
     return render_template('symptoms.html')

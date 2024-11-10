@@ -61,30 +61,93 @@
             <div class="mt-6">
                 <h3 class="text-xl font-bold mb-4">Recommendations</h3>
                 
-                <button class="recommendation-btn w-full py-2 mb-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
-                    Description
-                </button>
-                <p class="description text-gray-300 hidden">{{ recommendations.description }}</p>
+                <!-- Description Card -->
+                <div class="mb-4">
+                    <button class="recommendation-btn w-full py-3 px-4 bg-indigo-500 hover:bg-indigo-600 rounded-t-md text-white flex justify-between items-center">
+                        <span class="flex items-center">
+                            <i class="ri-file-text-line mr-2"></i>
+                            Description
+                        </span>
+                        <i class="ri-arrow-down-s-line transition-transform"></i>
+                    </button>
+                    <div class="description hidden bg-gray-700 p-4 rounded-b-md">
+                        <p class="text-gray-200 leading-relaxed">
+                            {{ recommendations.description }}
+                        </p>
+                    </div>
+                </div>
 
-                <button class="recommendation-btn w-full py-2 mb-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
-                    Medication
-                </button>
-                <p class="description text-gray-300 hidden">{{ recommendations.medication }}</p>
+                <!-- Medication Card -->
+                <div class="mb-4">
+                    <button class="recommendation-btn w-full py-3 px-4 bg-indigo-500 hover:bg-indigo-600 rounded-t-md text-white flex justify-between items-center">
+                        <span class="flex items-center">
+                            <i class="ri-medicine-bottle-line mr-2"></i>
+                            Medication
+                        </span>
+                        <i class="ri-arrow-down-s-line transition-transform"></i>
+                    </button>
+                    <div class="description hidden bg-gray-700 p-4 rounded-b-md">
+                        <ul class="list-disc pl-5 space-y-2">
+                            {% for med in recommendations.medication %}
+                                <li class="text-gray-200">{{ med }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
 
-                <button class="recommendation-btn w-full py-2 mb-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
-                    Diets
-                </button>
-                <p class="description text-gray-300 hidden">{{ recommendations.diets }}</p>
+                <!-- Diets Card -->
+                <div class="mb-4">
+                    <button class="recommendation-btn w-full py-3 px-4 bg-indigo-500 hover:bg-indigo-600 rounded-t-md text-white flex justify-between items-center">
+                        <span class="flex items-center">
+                            <i class="ri-restaurant-line mr-2"></i>
+                            Recommended Diet
+                        </span>
+                        <i class="ri-arrow-down-s-line transition-transform"></i>
+                    </button>
+                    <div class="description hidden bg-gray-700 p-4 rounded-b-md">
+                        <ul class="list-disc pl-5 space-y-2">
+                            {% for diet in recommendations.diets %}
+                                <li class="text-gray-200">{{ diet }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
 
-                <button class="recommendation-btn w-full py-2 mb-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
-                    Precautions
-                </button>
-                <p class="description text-gray-300 hidden">{{ recommendations.precaution }}</p>
+                <!-- Precautions Card -->
+                <div class="mb-4">
+                    <button class="recommendation-btn w-full py-3 px-4 bg-indigo-500 hover:bg-indigo-600 rounded-t-md text-white flex justify-between items-center">
+                        <span class="flex items-center">
+                            <i class="ri-alert-line mr-2"></i>
+                            Precautions
+                        </span>
+                        <i class="ri-arrow-down-s-line transition-transform"></i>
+                    </button>
+                    <div class="description hidden bg-gray-700 p-4 rounded-b-md">
+                        <ul class="list-disc pl-5 space-y-2">
+                            {% for precaution in recommendations.precaution %}
+                                <li class="text-gray-200">{{ precaution }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
 
-                <button class="recommendation-btn w-full py-2 bg-indigo-500 hover:bg-indigo-600 rounded-md text-white">
-                    Workouts
-                </button>
-                <p class="description text-gray-300 hidden">{{ recommendations.workout }}</p>
+                <!-- Workouts Card -->
+                <div class="mb-4">
+                    <button class="recommendation-btn w-full py-3 px-4 bg-indigo-500 hover:bg-indigo-600 rounded-t-md text-white flex justify-between items-center">
+                        <span class="flex items-center">
+                            <i class="ri-run-line mr-2"></i>
+                            Recommended Workouts
+                        </span>
+                        <i class="ri-arrow-down-s-line transition-transform"></i>
+                    </button>
+                    <div class="description hidden bg-gray-700 p-4 rounded-b-md">
+                        <ul class="list-disc pl-5 space-y-2">
+                            {% for workout in recommendations.workout %}
+                                <li class="text-gray-200">{{ workout }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
             </div>
             {% endif %}
         </div>
@@ -96,6 +159,32 @@
             </small>
         </footer>
     </main>
+
+    <!-- Add this script at the end of your body tag -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const recommendationBtns = document.querySelectorAll('.recommendation-btn');
+            
+            recommendationBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const description = this.nextElementSibling;
+                    const arrow = this.querySelector('.ri-arrow-down-s-line');
+                    
+                    // Toggle description
+                    description.classList.toggle('hidden');
+                    
+                    // Rotate arrow
+                    if (description.classList.contains('hidden')) {
+                        arrow.style.transform = 'rotate(0deg)';
+                        btn.classList.remove('rounded-b-none');
+                    } else {
+                        arrow.style.transform = 'rotate(180deg)';
+                        btn.classList.add('rounded-b-none');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
